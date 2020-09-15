@@ -125,7 +125,7 @@ type Msg struct {
 		TopupID              TopupID            `db:"topup_id"`
 
 		SessionID     SessionID     `json:"session_id,omitempty"`
-		SessionStatus SessionStatus `json:"session_status,omitempty"`
+		SessionStatus SessionStatus `db:"session_status"          json:"session_status,omitempty"`
 
 		// These fields are set on the last outgoing message in a session's sprint. In the case
 		// of the session being at a wait with a timeout then the timeout will be set. It is up to
@@ -427,10 +427,10 @@ const insertMsgSQL = `
 INSERT INTO
 msgs_msg(uuid, text, high_priority, created_on, modified_on, queued_on, direction, status, attachments, metadata,
 		 visibility, msg_type, msg_count, error_count, next_attempt, channel_id, connection_id, response_to_id,
-		 contact_id, contact_urn_id, org_id, topup_id, broadcast_id)
+		 contact_id, contact_urn_id, org_id, topup_id, broadcast_id,session_status)
   VALUES(:uuid, :text, :high_priority, :created_on, now(), now(), :direction, :status, :attachments, :metadata,
 		 :visibility, :msg_type, :msg_count, :error_count, :next_attempt, :channel_id, :connection_id, :response_to_id,
-		 :contact_id, :contact_urn_id, :org_id, :topup_id, :broadcast_id)
+		 :contact_id, :contact_urn_id, :org_id, :topup_id, :broadcast_id, :session_status)
 RETURNING 
 	id as id, 
 	now() as modified_on,
